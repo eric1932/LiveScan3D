@@ -149,8 +149,25 @@ namespace LiveScanPlayer
                         List<byte> colors = new List<byte>();
                         lFrameFiles[i].ReadFrame(vertices, colors);
 
-                        tempAllVertices.AddRange(vertices);                        
-                        tempAllColors.AddRange(colors);
+                        // a place to drop points of background (crop)
+                        //Console.WriteLine("Here");
+                        List<float> vertices2 = new List<float>();
+                        List<byte> colors2 = new List<byte>();
+                        for (int j = 2; j < vertices.Count; j += 3)
+                        {
+                            if (vertices[j] < 1.5f)
+                            {
+                                vertices2.Add(vertices[j-2]);
+                                vertices2.Add(vertices[j-1]);
+                                vertices2.Add(vertices[j]);
+                                colors2.Add(colors[j-2]);
+                                colors2.Add(colors[j-1]);
+                                colors2.Add(colors[j]);
+                            }
+                        }
+
+                        tempAllVertices.AddRange(vertices2);
+                        tempAllColors.AddRange(colors2);
                     }
                 }
 

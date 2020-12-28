@@ -275,8 +275,25 @@ namespace KinectServer
 
                     for (int i = 0; i < lFramesRGB.Count; i++)
                     {
-                        lAllVertices.AddRange(lFramesVerts[i]);
-                        lAllColors.AddRange(lFramesRGB[i]);
+                        List<byte> thisRGB = new List<byte>();
+                        List<Single> thisVerts = new List<Single>();
+                        //List<Body> thisBody = new List<Body>();
+
+                        for (int j = 2; j < lFramesRGB[i].Count; j += 3)
+                        {
+                            if (lFramesVerts[i][j] < 1.5f)
+                            {
+                                thisVerts.Add(lFramesVerts[i][j - 2]);
+                                thisVerts.Add(lFramesVerts[i][j - 1]);
+                                thisVerts.Add(lFramesVerts[i][j]);
+                                thisRGB.Add(lFramesRGB[i][j - 2]);
+                                thisRGB.Add(lFramesRGB[i][j - 1]);
+                                thisRGB.Add(lFramesRGB[i][j]);
+                            }
+                        }
+
+                        lAllVertices.AddRange(thisVerts);
+                        lAllColors.AddRange(thisRGB);
                         lAllBodies.AddRange(lFramesBody[i]);                       
                     }
 
